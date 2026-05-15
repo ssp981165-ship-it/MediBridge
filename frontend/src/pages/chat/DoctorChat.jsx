@@ -36,19 +36,28 @@ export const DoctorChat = ({ activePatientId, activeChatId,activePatientName }) 
     if (!socket.current) return;
 
     const handleMessageReceived = (newMessageReceived) => {
-      // Only add message to state if it belongs to the currently open chat
-      if (activePatientId === newMessageReceived.chat._id || 
-          activePatientId === newMessageReceived.sender._id) {
+      // Normalize IDs to strings before comparing to avoid type mismatches
+      const incomingChatId = newMessageReceived?.chat?._id || newMessageReceived?.chat;
+      const incomingSenderId = newMessageReceived?.sender?._id || newMessageReceived?.sender;
+
+      const isSameChat = String(incomingChatId) === String(activeChatId);
+      const isFromActivePatient = String(incomingSenderId) === String(activePatientId);
+
+      // Debug logs (helpful during local development)
+      // eslint-disable-next-line no-console
+      console.debug("socket: message recieved", { incomingChatId, incomingSenderId, activeChatId, activePatientId, isSameChat, isFromActivePatient });
+
+      if (isSameChat || isFromActivePatient) {
         setMessages((prev) => [...prev, newMessageReceived]);
       } else {
-        toast.info(`New message from another patient`);
+        toast.info("New message from another patient");
       }
     };
 
     socket.current.on("message recieved", handleMessageReceived);
 
     return () => {
-      socket.current.off("message recieved", handleMessageReceived);
+      if (socket.current && socket.current.off) socket.current.off("message recieved", handleMessageReceived);
     };
   }, [activePatientId]);
 

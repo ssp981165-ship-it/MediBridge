@@ -235,13 +235,13 @@ io.on("connection", (socket) => {
 
   socket.on("setup", (user) => {
       socket.join(user._id);
-      console.log("Room created for user:", user._id);
+      // console.log("Room created for user:", user._id);
       socket.emit("connected");
   });
 
   socket.on("join chat", (room) => {
       socket.join(room);
-      console.log("User joined chat room:", room);
+      // console.log("User joined chat room:", room);
 
   });
 
@@ -263,7 +263,7 @@ io.on("connection", (socket) => {
     // console.log("new message came")
     // console.log(newMessageRecieved);
       // const chat = newMessageRecieved.chat;
-      console.log();
+      // console.log();
       const userid=data.user[0]._id;
       const chatid=data.chatid;
       // console.log(userid);

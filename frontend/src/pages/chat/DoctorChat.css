@@ -61,12 +61,13 @@
   }
   
   .chat-area {
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    background-color: #eaf1f8;
-    padding: 20px;
-  }
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      background-color: #eaf1f8;
+      padding: 20px;
+      min-height: 0; /* allow children to use flex-based scrolling */
+    }
   
   .chat-header {
     font-size: 20px;
@@ -76,14 +77,15 @@
   }
   
   .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 10px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding-right: 10px;
+      padding-bottom: 16px; /* space for input bar */
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0; /* prevents parent overflow issues on some browsers */
+    }
   
   .chat-bubble {
     max-width: 60%;
@@ -117,31 +119,51 @@
   }
   
   .chat-input {
-    display: flex;
-    gap: 10px;
-  }
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 0 0 0;
+      background: transparent;
+      position: sticky;
+      bottom: 0;
+      z-index: 2;
+    }
   
   .chat-input input {
-    flex: 1;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
   
   .chat-input button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
   
   .chat-input button:hover {
     background-color: #0056b3;
   }
+
+/* Wrapper used by component root to ensure full-height layout */
+.chat-area-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Slightly narrower chat bubbles for readability */
+.chat-bubble {
+  max-width: 75%;
+}
   
   .no-chat {
     text-align: center;
